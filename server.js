@@ -50,7 +50,15 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:8081", "http://localhost:8080", "http://localhost:3000", "http://localhost:4000"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:8081",
+      "http://localhost:8080",
+      "http://localhost:3000",
+      "http://localhost:4000",
+      "https://parkside-user-frontend.vercel.app/",
+      "https://admin-park-side-57ltbxufx-utechos-projects.vercel.app",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
@@ -60,8 +68,8 @@ app.use(express.json());
 // Log all requests and their bodies for debugging
 app.use((req, res, next) => {
   console.log(`[${req.method}] ${req.path}`);
-  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+    console.log("Request body:", JSON.stringify(req.body, null, 2));
   }
   next();
 });
@@ -78,7 +86,12 @@ console.log("Public uploads directory:", publicUploadPath);
 const uploadsDir = path.join(__dirname, "uploads");
 const contentUploadsDir = path.join(__dirname, "uploads", "content");
 const publicUploadsDir = path.join(__dirname, "public", "uploads");
-const publicContentUploadsDir = path.join(__dirname, "public", "uploads", "content");
+const publicContentUploadsDir = path.join(
+  __dirname,
+  "public",
+  "uploads",
+  "content"
+);
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -112,17 +125,19 @@ app.use("/uploads", express.static(uploadPath));
 app.get("/test-uploads", (req, res) => {
   // List files in both upload directories
   const files = fs.existsSync(uploadPath) ? fs.readdirSync(uploadPath) : [];
-  const publicFiles = fs.existsSync(publicUploadPath) ? fs.readdirSync(publicUploadPath) : [];
+  const publicFiles = fs.existsSync(publicUploadPath)
+    ? fs.readdirSync(publicUploadPath)
+    : [];
   res.json({
     message: "Upload directories contents",
     uploads: {
       files,
-      path: uploadPath
+      path: uploadPath,
     },
     publicUploads: {
       files: publicFiles,
-      path: publicUploadPath
-    }
+      path: publicUploadPath,
+    },
   });
 });
 
@@ -159,7 +174,9 @@ app.use("/api/appearance-settings", appearanceSettingsRoutes);
 // Test route
 app.get("/", async (req, res) => {
   try {
-    const collections = await mongoose.connection.db.listCollections().toArray();
+    const collections = await mongoose.connection.db
+      .listCollections()
+      .toArray();
     for (const collection of collections) {
       console.log(collection.name + "--------");
     }
@@ -202,5 +219,3 @@ const startServer = async () => {
 };
 
 startServer();
-
-
