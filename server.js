@@ -57,7 +57,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:4000",
       "https://parkside-user-frontend.vercel.app",
-      "https://admin-park-side-57ltbxufx-utechos-projects.vercel.app",
+      "https://admin-park-side-pnva.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
